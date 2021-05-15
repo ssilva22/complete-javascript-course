@@ -74,3 +74,84 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+
+//SLICE METHOD.
+
+let arr =['a','b','c','d','e'];
+
+console.log(arr.slice(2));
+//The result will be ['c','d','e'];
+
+console.log(arr.slice(2,4));
+//The result will be ['c','d'];
+
+console.log(arr.slice);
+
+console.log(arr.slice(-1));
+//Output last element of an array.
+
+console.log(arr.slice());
+//Output entire array.
+
+console.log([...arr]);
+//Output entire array.
+
+
+//SPLICE METHOD.
+
+//Works like the Slice method but permanently changes
+// the array.
+
+console.log(arr.splice(2));
+
+arr.splice(-1);
+//Removes last element from the array.
+
+console.log(arr);
+
+
+//REVERSE
+//Reverses the array and permanently changes the array
+
+//CONCAT
+//Concatenates 2 arrays.
+
+const letters=arr.concat(arr2);
+console.log(letters);
+console.log([...arr,...arr2]);
+
+//JOIN
+console.log(letter.join());
+
+//ForEach Method
+
+const movements=[200,450,-400,3000,-650,-130,70,1300];
+
+for (const movement of movements){
+  if(movement>0){
+    console.log(`You deposited ${movement}`);
+  }else{
+    console.log(`You withdrew ${Math.abs(movement)}`);
+  }
+}
+
+movements.forEach(function(movement){
+if(movement>0){
+  console.log(`You deposited ${movement}`);
+}else{
+  console.log(`You withdrew ${Math.abs(movement)}`);
+}
+})
+
+//Map Method
+const currencies = new Map([
+  ['USD','United States Dollar'],
+  ['EUR','Euro'],
+  ['GBP','Pound Sterling']
+]);
+
+currencies.forEach(function(value,key,map)){
+  console.log(`${key}:${value}`);
+}
+
