@@ -163,5 +163,223 @@ h1.onmouseenter= function(e) {
 }
 */
  
-//Event Propagation : Bubbling And Capturing
+//////////////////////////////////////////////////////////////////////
 
+//Event Delegation
+//Implement smooth scrolling behavior to the navigation.
+/*
+document.querySelectorAll('.nav__link').forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.preventDefault();
+    const id= this.getAttribute('href');
+    document.querySelector(id).scrollIntoView({
+      behavior: 'smooth' });
+  });
+});
+*/
+
+//1. Add Event Listener to common parent element.
+//2. Determine what element originated the event.
+/*
+document.querySelector('.nav__links').addEventListener('click',function(e){
+  console.log(e.target);
+});
+*/
+//Matching Strategy
+if (e.target.classList.contains('.nav__link')){
+  const id=e.target.getAttribute('href');
+  console.log(id);
+  document.querySelector(id).scrollIntoView({
+    behavior: 'smooth'
+  });
+}
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+//DOM Traversing
+
+const h1= document.querySelector('h1');
+
+//Going downwards : child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);//not very used
+console.log(h1.children);//Most used
+
+h1.firstElementChild.style.color='white';
+h1.lastElementChild.style.color='red';
+
+//Going Upwards
+
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background= 'var(--gradient-secondary)';
+
+
+// Going sideways: siblings
+
+console.log(h1.previousElementSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function(el){
+  if (el !== h1) el.style.transform= 'scale(0.5)';
+});
+
+
+//Building A tabbed Component 
+
+//Tabbed Component
+
+const tabs = document.querySelectorAll('.operations__tab');
+
+const tabContainer= document.querySelector('operations__tab-container');
+
+const  tabContent= document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e){
+  const clicked= e.target.closest('.operations__tab');
+  console.log(clicked);
+
+  //guards clause
+  if(!clicked) return;
+
+  //Active Tabs
+
+  tabs.forEach(t=> t.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  //Activate content area
+
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`)
+  .classList.add();
+});
+
+//Passing Arguments to Event Handlers.
+
+//Menu Fade Animation
+
+const handleHover= function(e,opacity){
+  if (e.target.classList.contains('nav__link')){
+    const link=e.target;
+    const siblings = link.closest('.nav').querySelector('.nav__link');
+    const logo= link.closest('.nav').querySelector('img');
+  
+    siblings.forEach(el =>{
+      if(el !== link) el.style.opacity= opacity;
+      })
+      logo.style.opacity = opacity;
+  }
+}
+
+nav.addEventListener('mouseover',function(e){
+  handleHover(e,0.5);
+});
+
+nav.addEventListener('mouseout',function(e){
+  handleHover(e,1);
+});
+
+//Using bind method to do the same thing
+//nav.addEventListener('mouseover',handleHover.bind(0.5));
+//nav.addEventListener('mouseover',handleHover.bind(1));
+
+
+//Build A Sticky Navigation. 
+//All the sticky navigation does is change to a fixed positon,as well as the
+//background color to transparent
+
+window.addEventListener('scroll',function(e){
+ console.log(window.scrollY)
+});
+
+const initialCords = section1.getBoundingClientRect();
+
+if(window.scrollY>initialCords.top)nav.classList.add('sticky')
+else nav.classList.add('sticky');
+
+//Intersection of server API
+
+const obsCallback = function() {
+
+}
+
+const obsOptions={
+  root: null,
+  threshold:0.1
+};
+
+const observer= new IntersectionObserver(obsCallback,obsOptions);
+observer.observe(section1);
+
+
+//Revealing elements on scroll.
+
+const allSections= document.querySelectorAll('.section');
+
+const revealSection= function(entries, observer){
+const [entry]= entries;
+console.log(entry);
+
+if (entry.isIntersecting) return;
+entry.targer.classList.remove('section--hidden');
+observer.unobserve(entry.target);
+}
+
+const sectionObserver= new IntersectionObserver(revealSection,{
+root:nill,
+threshold:0.15,
+rootMargin: `-${navHeight}px`,
+});
+
+allSections.forEach(function(section){
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+//lazy loading images.
+
+const imgTargets= document.querySelectorAll('img[data=src]');
+
+const loadImg = function(entries, observer){
+const [entry] = entries; 
+console.log(entry);
+
+if(entry.isIntersecting)return;
+//replace src with data src
+entry.target.src= entry.target.dataset.src;
+entry.target.classList.remove('lazy-img');
+
+entry.target.addEventListener('load',function () {
+
+})
+}
+
+const imgObserver = new IntersectionObserver(loadIMG,{
+  root: null,
+  threshold: 0,
+})
+
+imgTargets.forEach(img=imgObserver.observe(img));
+
+//Building a Slider Component(WATCH LATER).
+
+
+//Efficient script loading.
+
+//REGULAR way: <script src= "script.js">
+
+//ASYNC way: <script async src= "script.js">
+
+//DEFER way: <script defer scr= "script.js">
+
+
+//Scripts loaded with ASYNCit 
+/*Scripts are fetched asynchronouslt and executed immediately
+
+Usually DOMContentLoaded event waits for ALL script to execute,except
+for async scripts. So, DOMContentLoaded does not wait for an async script*/
+
+
+ 
